@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Prompt Optimizer | Prompt Developer Circle</title>
+    <style>
+        :root {
+            --bg-dark: #0d0e15;
+            --card-bg: #151622;
+            --accent-purple: #7c4dff;
+            --accent-green: #00e676;
+            --text-light: #f5f6fa;
+            --text-muted: #8b92b6;
+            --border-color: #2b2e42;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-purple), #b388ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-light);
+            padding: 12px;
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-purple);
+        }
+
+        select {
+            width: 100%;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-light);
+            padding: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-purple), #651fff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .output-box {
+            position: relative;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9rem;
+            color: var(--accent-green);
+            min-height: 100px;
+            max-height: 250px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: auto;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-light);
+        }
+
+        .newsletter-trap {
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .newsletter-trap h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .newsletter-trap p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-light);
+            padding: 10px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            width: auto;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            background: linear-gradient(135deg, var(--accent-green), #00b0ff);
+            color: #0d0e15;
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 15px 10px; }
+            header h1 { font-size: 1.5rem; }
+            .card { padding: 15px; }
+            .newsletter-form { flex-direction: column; }
+            .newsletter-form button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>PROMPT OPTIMIZER</h1>
+        <p>Bypassing standard conversational drift instantly.</p>
+    </header>
+
+    <div class="card">
+        <div class="form-group">
+            <label for="rawPrompt">Input Raw Task</label>
+            <textarea id="rawPrompt" placeholder="Describe what you want AI to do in plain English..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="templateStyle">Optimization Target Framework</label>
+            <select id="templateStyle">
+                <option value="system">System Prompt / Agentic Structure</option>
+                <option value="marketing">B2B Curation & Marketing Casing</option>
+                <option value="coder">High-Performance Code Generation</option>
+            </select>
+        </div>
+
+        <button onclick="optimizePrompt()">EXECUTE OPTIMIZATION</button>
+    </div>
+
+    <div class="card" id="outputCard" style="display: none;">
+        <div class="form-group" style="position: relative;">
+            <label>Optimized System Matrix</label>
+            <button class="copy-btn" onclick="copyOutput()" id="copyBtn">COPY</button>
+            <div class="output-box" id="optimizedOutput"></div>
+        </div>
+
+        <div class="newsletter-trap">
+            <h3>Join the Prompt Developer Circle</h3>
+            <p>Every Sunday, I manually test, break, and optimize prompt telemetry straight from Asansol. No corporate jargon. Just raw, tested prompt systems sent straight to your inbox.</p>
+            
+            <form class="newsletter-form" action="https://yournewsletter.substack.com/subscribe" method="GET" target="_blank">
+                <input type="email" name="email" placeholder="Enter your business email" required>
+                <button type="submit">GET SUNDAY SYSTEMS</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const optimizationMatrices = {
+        system: (raw) => `# ROLE: Elite Expert Specialist\n# TARGET GOAL: Resolve the following task with absolute technical precision.\n\n## SEMANTIC BOUNDARIES:\n- Answer the query strictly drawing from verified context.\n- Eliminate any conversational filler, meta-announcements, or sycophancy.\n- Highlight the core structural answers with strong bold tags.\n\n## EXPECTED RUNTIME OUTPUT:\n- Return high-density, structured markdown outlines.\n- Break down complex execution patterns into flat-file numbered steps.\n\n## INGESTED TASK:\n"${raw}"`,
+        
+        marketing: (raw) => `# ROLE: Principal B2B Growth Architect\n# CONTEXT: High-margin software-as-a-service positioning.\n\n## AUDIENCE PROTOCOL:\n- Speak directly to senior enterprise decision-makers and VC investors.\n- Eradicate beginner-sounding explanations; lead directly with technical metrics.\n- Reframe raw inputs to focus on maximizing lifetime value and zero-overhead margins.\n\n## INPUT PARAMETERS:\n"${raw}"`,
+        
+        coder: (raw) => `# ROLE: Lead Systems Engineer (Rust/Python/Go)\n# CONTEXT: Production-grade client-side server deployment.\n\n## COMPLIANCE BOUNDARIES:\n- Code must run securely without active, external server-side script permissions.\n- Organize logically into verified, copy-paste single files.\n- Handle exception routing explicitly with clear print debug logs.\n\n## TASK PARAMETERS:\n"${raw}"`
+    };
+
+    function optimizePrompt() {
+        const rawInput = document.getElementById('rawPrompt').value.trim();
+        const style = document.getElementById('templateStyle').value;
+        const outputCard = document.getElementById('outputCard');
+        const outputBox = document.getElementById('optimizedOutput');
+
+        if (!rawInput) {
+            alert('Please input a raw task first.');
+            return;
+        }
+
+        outputCard.style.display = 'block';
+        outputBox.innerHTML = '';
+        
+        const optimizedText = optimizationMatrices[style](rawInput);
+        let index = 0;
+
+        function type() {
+            if (index < optimizedText.length) {
+                outputBox.innerHTML += optimizedText.charAt(index);
+                index++;
+                outputBox.scrollTop = outputBox.scrollHeight;
+                setTimeout(type, 3);
+            }
+        }
+        type();
+    }
+
+    function copyOutput() {
+        const text = document.getElementById('optimizedOutput').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = 'COPIED!';
+            btn.style.color = 'var(--accent-green)';
+            setTimeout(() => {
+                btn.innerText = 'COPY';
+                btn.style.color = 'var(--text-light)';
+            }, 1500);
+        });
+    }
+</script>
+</body>
+</html>
